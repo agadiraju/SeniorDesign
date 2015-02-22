@@ -76,6 +76,7 @@ def generate_features(im):
       counter += 1
   return feature_vector 
 
+
 def standardize_features(X):
   n, d = X.shape
 
@@ -99,6 +100,7 @@ def standardize_features(X):
         standard[i][j] = (initial_value - f_mean) / (f_std)
   return (standard, standardize)  # return mean/std list for later inversion
 
+
 def invert_standardization(X, s_list):
   normal = np.zeros(shape = X.shape)
   for i in xrange(X.shape[0]):
@@ -111,6 +113,7 @@ def invert_standardization(X, s_list):
         normal[i][j] = (f_std * standard_value) + f_mean
   return np.rint(normal)  # get rid of black lines
 
+
 def plot_image(clusters, size, output_filename):
   new_im = Image.new('RGB', size)
   pix = new_im.load()
@@ -120,6 +123,55 @@ def plot_image(clusters, size, output_filename):
       [x, y] = map(int, row[-2:])
       pix[x, y] = (r, g, b)
   new_im.save(output_filename)
+
+
+def kmeans_exec(K, input_filename):
+  # K = int(sys.argv[1])
+  # input_filename = sys.argv[2]
+  # output_filename = sys.argv[3]
+
+  im = Image.open(input_filename)
+  X = generate_features(im)
+  X, standardize_list = standardize_features(X)
+  kmeans = KMeans(K)
+  centroids, clusters = kmeans.cluster(X)
+
+  for c in sorted(clusters.keys()):
+    current_centroid = centroids[c]
+    [cent_r, cent_g, cent_b] = current_centroid[:3]
+    for v in clusters[c]:
+      v[:3] = [cent_r, cent_g, cent_b]
+
+  for c in clusters.keys():
+    clusters[c] = invert_standardization(np.array(clusters[c]), standardize_list)
+
+  return clusters
+
+
+def get_colors(K):
+  X = generate_features(im)
+  X, standardize_list = standardize_features(X)
+  kmeans = KMeans(K)
+  centroids, clusters = kmeans.cluster(X)
+
+  return [c[:3] for c in centroids]  # only RGB values
+
+  # for c in sorted(clusters.keys()):
+  #   current_centroid = centroids[c]
+  #   [cent_r, cent_g, cent_b] = current_centroid[:3]
+  #   for v in clusters[c]:
+  #     v[:3] = [cent_r, cent_g, cent_b]
+
+def get_bounded_box_coordinates(clusters):
+  cluster = clusters.values()
+  min_vals = {}
+  for points in cluster_points:
+    for p in points:
+      
+
+
+
+
 
 
 if __name__ == '__main__':
