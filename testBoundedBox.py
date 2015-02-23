@@ -1,3 +1,7 @@
+# Test script for bounded box implementation in image segmentation
+# To test: 'python testBoundedBox.py [imgpath]'
+# Author: Abhishek Gadiraju (abhishek.gadiraju@gmail.com)
+
 import sys
 
 from imageSegmentation import plot_bounded_box
