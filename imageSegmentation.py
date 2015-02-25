@@ -17,6 +17,7 @@ class KMeans:
     self.convergence_factor = .001
     self.max_iterations = 50
 
+
   # Input: two rows from feature vector X
   # Output: a distance metric calculated from the last two values in the rows
   def get_distance(self, point1, point2):
@@ -198,7 +199,7 @@ def get_bounded_box_coordinates(clusters, im_size):
 
   # Assuming K = 2
   mole_color = [k for k in colors if (max_x_vals[k] + 1) != max_x and (max_y_vals[k] + 1) != max_y]
-  mole_color = mole_color[0]
+  #mole_color = mole_color[0]
 
   left = min_x_vals[mole_color]
   upper = min_y_vals[mole_color]
@@ -216,11 +217,7 @@ def plot_bounded_box(original_image):
   return bounded_box_image
 
 
-if __name__ == '__main__':
-  K = int(sys.argv[1])
-  input_filename = sys.argv[2]
-  output_filename = sys.argv[3]
-
+def main(input_filename, output_filename, K):
   im = Image.open(input_filename)
   X = generate_features(im)
   X, standardize_list = standardize_features(X)
@@ -238,3 +235,10 @@ if __name__ == '__main__':
 
   img = plot_image(clusters, im.size)
   img.save(output_filename)
+
+if __name__ == '__main__':
+  K = int(sys.argv[1])
+  input_filename = sys.argv[2]
+  output_filename = sys.argv[3]
+  main(input_filename,output_filename,K)
+  
