@@ -14,8 +14,8 @@ class KMeans:
     self.K = K
     self.centroids = []  # list of centroids
     self.clusters = {}  # dictionary of clusters with index of centroid as key
-    self.convergence_factor = .001
-    self.max_iterations = 50
+    self.convergence_factor = .0001
+    self.max_iterations = 100
 
 
   # Input: two rows from feature vector X
@@ -169,6 +169,11 @@ def get_bounded_box_coordinates(clusters, im_size):
   colors = set()
   for points in cluster_points:
     for p in points:
+      # prev_min_x = min_x_vals
+      # prev_min_y = min_y_vals
+      # prev_max_x = max_x_vals
+      # prev_max_y = max_y_vals
+      updated = False
       (current_x, current_y) = tuple(p[-2:])
       (r, g, b) = tuple(p[:3])
       colors.add((r, g, b))
@@ -178,28 +183,54 @@ def get_bounded_box_coordinates(clusters, im_size):
       else:
         if current_x < min_x_vals[(r, g, b)]:
           min_x_vals[(r, g, b)] = current_x
+          updated = True
 
       if (r, g, b) not in min_y_vals:
         min_y_vals[(r, g, b)] = current_y
       else:
         if current_y < min_y_vals[(r, g, b)]:
           min_y_vals[(r, g, b)] = current_y
+          updated = True
 
       if (r, g, b) not in max_x_vals:
         max_x_vals[(r, g, b)] = current_x
       else:
         if current_x > max_x_vals[(r, g, b)]:
-          max_x_vals[(r, g, b)] = current_x      
+          max_x_vals[(r, g, b)] = current_x
+          #updated = True      
 
       if (r, g, b) not in max_y_vals:
         max_y_vals[(r, g, b)] = current_y
       else:
         if current_y > max_y_vals[(r, g, b)]:
-          max_y_vals[(r, g, b)] = current_y 
+          max_y_vals[(r, g, b)] = current_y
+          #updated = True 
+
+      if updated:
+        print p
+        print max_x_vals
+        print max_y_vals
+        print min_x_vals
+        print min_y_vals
+        #raw_input()
 
   # Assuming K = 2
-  mole_color = [k for k in colors if (max_x_vals[k] + 1) != max_x and (max_y_vals[k] + 1) != max_y]
-  #mole_color = mole_color[0]
+
+  print (max_x, max_y)
+  # raw_input()
+  print max_x_vals
+  print max_y_vals
+  print min_x_vals
+  print min_y_vals
+  # raw_input()
+  print colors
+  # raw_input()
+  mole_color = [k for k in colors if (max_x_vals[k] + 1) != max_x or (max_y_vals[k] + 1) != max_y]
+  print mole_color
+  # raw_input()
+  if not mole_color:  # current frame is the bounding box
+    return map(int, (0, 0, max_x, max_y))
+  mole_color = mole_color[0]
 
   left = min_x_vals[mole_color]
   upper = min_y_vals[mole_color]
