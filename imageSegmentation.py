@@ -267,6 +267,7 @@ def main(input_filename, output_filename, K):
   img = plot_image(clusters, im.size)
   img.save(output_filename)
 
+# Usage: python imageSegmentation.py [K] [input] [output]
 if __name__ == '__main__':
   K = int(sys.argv[1])
   input_filename = sys.argv[2]
