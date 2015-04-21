@@ -1,14 +1,15 @@
-import sys
-import math
-import numpy as np
-from PIL import Image, ImageOps, ImageMath
-import imageSegmentation
 import cv2
+import numpy as np
+import sys
 
 from scipy import ndimage
 from skimage.measure import structural_similarity as ssim
 
+
 def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
 	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
 	err /= float(imageA.shape[0] * imageA.shape[1])
 	
@@ -34,10 +35,14 @@ def divide_into_two(img):
 	return (top_half, bottom_half)
 
 # higher the SSIM metric, the more symmetric the image is
-def get_symmetry(img):
+def get_symmetry_ssim(img):
 	(top_half, bottom_half) = divide_into_two(img)
 	return ssim(top_half, bottom_half)
 
+# higher the mse metric, the less symmetric the image is
+def get_symmetry_mse(img):
+	(top_half, bottom_half) = divide_into_two(img)
+	return mse(top_half, bottom_half)
 
 # def rotateImage(image, angle):
 #   image_center = tuple(np.array(image.shape)/2)
@@ -79,11 +84,13 @@ if __name__ == '__main__':
 
 	img = cv2.imread(input_filename)
 	(x, y) = get_even_image(img.shape)
-	top_half = img[0:x, 0:y/2]
-	bottom_half = ndimage.rotate(img[0:x, y/2:y], 180)
-	top_half = cv2.cvtColor(top_half, cv2.COLOR_BGR2GRAY)
-	bottom_half = cv2.cvtColor(bottom_half, cv2.COLOR_BGR2GRAY)
-	print ssim(top_half, bottom_half)
+	(top_half, bottom_half) = divide_into_two(img)
+	# top_half = img[0:x, 0:y/2]
+	# bottom_half = ndimage.rotate(img[0:x, y/2:y], 180)
+	# top_half = cv2.cvtColor(top_half, cv2.COLOR_BGR2GRAY)
+	# bottom_half = cv2.cvtColor(bottom_half, cv2.COLOR_BGR2GRAY)
+	print get_symmetry_ssim(img)
+	print get_symmetry_mse(img)
 	cv2.imshow("top half", top_half)
 	cv2.imshow("bottom half", bottom_half)
 	cv2.waitKey(0)
