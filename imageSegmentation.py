@@ -206,27 +206,27 @@ def get_bounded_box_coordinates(clusters, im_size):
           max_y_vals[(r, g, b)] = current_y
           #updated = True 
 
-      if updated:
-        print p
-        print max_x_vals
-        print max_y_vals
-        print min_x_vals
-        print min_y_vals
+      # if updated:
+      #   print p
+      #   print max_x_vals
+      #   print max_y_vals
+      #   print min_x_vals
+      #   print min_y_vals
         #raw_input()
 
   # Assuming K = 2
 
-  print (max_x, max_y)
+  # print (max_x, max_y)
   # raw_input()
-  print max_x_vals
-  print max_y_vals
-  print min_x_vals
-  print min_y_vals
+  # print max_x_vals
+  # print max_y_vals
+  # print min_x_vals
+  # print min_y_vals
   # raw_input()
-  print colors
+  # print colors
   # raw_input()
   mole_color = [k for k in colors if (max_x_vals[k] + 1) != max_x or (max_y_vals[k] + 1) != max_y]
-  print mole_color
+  # print mole_color
   # raw_input()
   if not mole_color:  # current frame is the bounding box
     return map(int, (0, 0, max_x, max_y))
