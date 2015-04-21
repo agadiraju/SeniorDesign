@@ -33,6 +33,7 @@ def divide_into_two(img):
 	bottom_half = cv2.cvtColor(bottom_half, cv2.COLOR_BGR2GRAY)
 	return (top_half, bottom_half)
 
+# higher the SSIM metric, the more symmetric the image is
 def get_symmetry(img):
 	(top_half, bottom_half) = divide_into_two(img)
 	return ssim(top_half, bottom_half)
