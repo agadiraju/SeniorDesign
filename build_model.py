@@ -15,10 +15,13 @@ def build_random_forest_classfier():
   X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size = 0.2,
                                      random_state = 0)
 
-  print len(X_test)
+  #print len(X_test)
   clf = RandomForestClassifier(n_estimators = 5)
   clf = clf.fit(X_train, y_train)
-  print clf.score(X_test, y_test)
+  #print clf.score(X_test, y_test)
+
+  scores = cross_validation.cross_val_score(clf, X, y, cv = 6)
+  print scores.mean()
 
 def build_feature_vector():
   img_list = import_image_paths()
