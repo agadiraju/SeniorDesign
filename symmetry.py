@@ -6,16 +6,16 @@ from scipy import ndimage
 from skimage.measure import structural_similarity as ssim
 
 
-# def mse(imageA, imageB):
-# 	# the 'Mean Squared Error' between the two images is the
-# 	# sum of the squared difference between the two images;
-# 	# NOTE: the two images must have the same dimension
-# 	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
-# 	err /= float(imageA.shape[0] * imageA.shape[1])
+def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
 	
-# 	# return the MSE, the lower the error, the more "similar"
-# 	# the two images are
-# 	return err
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
 
 # quick hack to get even image dimensions
 def get_even_image(im_dimensions):
@@ -23,8 +23,14 @@ def get_even_image(im_dimensions):
 
 	if x % 2 == 0 and y % 2 == 0:
 		return (x, y)
-	else:
+
+	if x % 2 == 1 and y % 2 == 1:
+		return (x - 1, y - 1)
+	elif y % 2 == 1:
 		return (x, y - 1)
+	else:
+		return (x - 1, y)
+
 
 def divide_into_two(img):
 	(x, y) = get_even_image(img.shape)

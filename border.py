@@ -20,9 +20,9 @@ def mse(imageA, imageB):
 	# the two images are
 	return err
 
-def get_gof(img):
-	img = cv2.imread(input_filename)
-	gray = cv2.imread(input_filename,0)
+def get_gof(gray):
+	# img = cv2.imread(input_filename)
+	# gray = cv2.imread(input_filename,0)
 
 	#finding contours
 	ret,thresh = cv2.threshold(gray,100,100,1) #127,255,0
@@ -36,6 +36,12 @@ def get_gof(img):
 	#cv2.drawContours(img, contours[maxContIndex], -1, (0,255,0), 3)
 
 	#drawing ellipse
+	# print maxContIndex
+	# print len(contours)
+
+	if len(contours) == 0:
+		return 1000.0  # very high 
+		
 	ellipse = cv2.fitEllipse(contours[maxContIndex])
 	# cv2.ellipse(img,ellipse,(0,255,0),2)
 	
@@ -53,10 +59,11 @@ def get_gof(img):
 if __name__ == '__main__':
 	input_filename = sys.argv[1]
 	
-	print get_gof(input_filename)
+	
 	#TODO: need to get k-means / bounded box first
 	img = cv2.imread(input_filename)
 	gray = cv2.imread(input_filename,0)
+	print get_gof(gray)
 
 	#finding contours
 	ret,thresh = cv2.threshold(gray,100,100,1) #127,255,0
