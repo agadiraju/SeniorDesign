@@ -2,6 +2,7 @@ import sys
 import math
 import numpy as np
 from PIL import Image, ImageOps, ImageMath
+from sklearn.cluster import KMeans
 import imageSegmentation as IS
 import cv2
 
@@ -25,7 +26,7 @@ def get_gof(gray):
 	# gray = cv2.imread(input_filename,0)
 
 	#finding contours
-	ret,thresh = cv2.threshold(gray,100,100,1) #127,255,0
+	ret,thresh = cv2.threshold(gray,100,190,1) #127,255,0
 	contours,h = cv2.findContours(thresh,mode=cv2.RETR_EXTERNAL,method=cv2.CHAIN_APPROX_NONE) #thresh,1,2
 	maxContIndex = 0
 	maxContCount = 0
@@ -63,10 +64,10 @@ if __name__ == '__main__':
 	#TODO: need to get k-means / bounded box first
 	img = cv2.imread(input_filename)
 	gray = cv2.imread(input_filename,0)
-	print get_gof(gray)
+	#print get_gof(gray)
 
 	#finding contours
-	ret,thresh = cv2.threshold(gray,100,100,1) #127,255,0
+	ret,thresh = cv2.threshold(gray,127,255,1) #127,255,0
 	contours,h = cv2.findContours(thresh,mode=cv2.RETR_EXTERNAL,method=cv2.CHAIN_APPROX_NONE) #thresh,1,2
 	maxContIndex = 0
 	maxContCount = 0
@@ -91,7 +92,7 @@ if __name__ == '__main__':
 		posx = (contours[maxContIndex][i][0][0] - center[0]) * math.cos(-angle) - (contours[maxContIndex][i][0][1]- center[1]) * math.sin(-angle)
 		posy = (contours[maxContIndex][i][0][0] - center[0]) * math.sin(-angle) + (contours[maxContIndex][i][0][1]- center[1]) * math.cos(-angle)
 		gof += abs(posx/size[0]*posx/size[0] + posy/size[1]*posy/size[1] - 0.25)
-	#print gof
+	print gof
 	cv2.imshow("window title", img)
 	cv2.waitKey()
 
