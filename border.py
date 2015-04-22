@@ -40,10 +40,13 @@ def get_gof(gray):
 	# print maxContIndex
 	# print len(contours)
 
-	if len(contours) == 0:
-		return 1000.0  # very high 
+	# if len(contours) == 0:
+	# 	return 1000.0  # very high 
 		
-	ellipse = cv2.fitEllipse(contours[maxContIndex])
+	try:	
+		ellipse = cv2.fitEllipse(contours[maxContIndex])
+	except cv2.error:
+		return 1000.0
 	# cv2.ellipse(img,ellipse,(0,255,0),2)
 	
 	center = ellipse[0]

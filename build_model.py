@@ -16,7 +16,7 @@ def build_random_forest_classfier():
                                      random_state = 0)
 
   #print len(X_test)
-  clf = RandomForestClassifier(n_estimators = 5)
+  clf = RandomForestClassifier(n_estimators = 10)
   clf = clf.fit(X_train, y_train)
   #print clf.score(X_test, y_test)
 
@@ -69,8 +69,8 @@ def import_image_paths():
       img_path_list.append(p + '/' + img)
       counter += 1
 
-      if counter == 25:
-        break
+      # if counter == 25:
+      #   break
 
   return img_path_list
 
