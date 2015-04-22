@@ -99,3 +99,4 @@ if __name__ == '__main__':
 # 	contours,h = cv2.findContours(thresh,1,2)
 # # 		cv2.drawContours(img, contours, -1, (0,255,0), 3)
 # # 		cv2.imshow("window title", img)
+
