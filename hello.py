@@ -5,6 +5,7 @@ from analyze_image import classify_image_url
 
 app = Flask(__name__)
 
+# added comment
 @app.route('/')
 def hello():
   return 'Hello World!'
