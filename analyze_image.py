@@ -30,16 +30,18 @@ def classify_image(img_path):
     for idx, entry in enumerate(new_entry):
       if idx == 1:
         if entry < benign_avgs[idx]:
-          print labels[idx] + ' value is lower than a normal benign mole'
+          output_messages.append(str(labels[idx]) + ' value is lower than a normal benign mole')
       else:
         if entry > benign_avgs[idx]:
-          print labels[idx] + ' value is higher than a normal benign mole'
+           output_messages.append(str(labels[idx]) + ' value is higher than a normal benign mole')
 
   else:
-    print "benign"
-  #(benign_mse, benign_ssim, benign_border, benign_)
+    output_messages.append("This mole looks benign, but we still encourage you to self-check regularly! Please visit a doctor if you suspect anything.")
+
+  return output_messages
 
 
 if __name__ == '__main__':
   input_filename = sys.argv[1]
-  classify_image(input_filename)
+  messages = classify_image(input_filename)
+  print messages
