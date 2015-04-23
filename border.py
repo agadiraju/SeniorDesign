@@ -1,7 +1,6 @@
 import sys
 import math
 import numpy as np
-from PIL import Image, ImageOps, ImageMath
 from sklearn.cluster import KMeans
 import imageSegmentation as IS
 import cv2
