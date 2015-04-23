@@ -10,6 +10,7 @@ import sys
 from sklearn import cross_validation
 from sklearn.cluster import MiniBatchKMeans
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import precision_score
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn import svm
 
@@ -36,13 +37,16 @@ def build_random_forest_classfier():
 
   #print len(X_test)
   clf_tmp = RandomForestClassifier(n_estimators = 30)
-  clf_tmp = clf_tmp.fit(X, y)
-  # print clf_tmp.score(X_test, y_test)
+  clf_tmp = clf_tmp.fit(X_train, y_train)
+  print clf_tmp.score(X_test, y_test)
+  y_pred = clf_tmp.predict(X_test)
+  #print 
+  print precision_score(y_test, y_pred)
 
-  scores = cross_validation.cross_val_score(clf_tmp, X, y, cv = 5)
-  print scores.mean()
+  #scores = cross_validation.cross_val_score(clf_tmp, X, y, cv = 8)
+  #print scores.mean()
 
-  clf = RandomForestClassifier(n_estimators = 10)
+  clf = RandomForestClassifier(n_estimators = 30)
   clf = clf.fit(X, y)
   return clf
 
@@ -110,7 +114,7 @@ def extract_image_features(img):
     #border_gof = 0
   color_contrast = color.color_contrast(img)
 
-  current_vec = [symmetry_ssim, symmetry_mse, border_gof, color_contrast]
+  current_vec = [symmetry_mse, symmetry_ssim, border_gof, color_contrast]
   return current_vec
 
 def build_feature_vector():
@@ -129,8 +133,8 @@ def build_feature_vector():
 
     #current_vec = [symmetry_ssim, symmetry_mse, border_gof, color_contrast]
 
-    [symmetry_ssim, symmetry_mse, border_gof, color_contrast] = extract_image_features(img)
-    feature_vector.append([symmetry_ssim, symmetry_mse, border_gof, color_contrast])
+    [symmetry_mse, symmetry_ssim, border_gof, color_contrast] = extract_image_features(img)
+    feature_vector.append([symmetry_mse, symmetry_ssim, border_gof, color_contrast])
 
     if 'benign' in img_filename:
       target = 0
@@ -160,18 +164,32 @@ def import_image_paths():
       img_path_list.append(p + '/' + img)
       counter += 1
 
-      if counter == 25:
-        break
+      # if counter == 10:
+      #   break
 
   return img_path_list
 
 
 if __name__ == '__main__':
   clf = build_random_forest_classfier() # 0.688888888889
-  print get_malignant_summary_data()
-  print get_benign_summary_data()
-  # with open('mole_random_forest_classifer.pk1', 'wb') as clf_file:
-  #   cPickle.dump(clf, clf_file)
+  malignant_avgs = get_malignant_summary_data()
+  benign_avgs = get_benign_summary_data()
+
+  with open('malignant_averages.txt', 'w') as malig_file:
+    for s in malignant_avgs:
+      malig_file.write(str(s) + '\n')
+
+  with open('benign_averages.txt', 'w') as benign_file:
+    for s in benign_avgs:
+      benign_file.write(str(s) + '\n')
+
+  # malig_file.close()
+  # benign_file = open('benign_averages.txt', 'w')
+  # benign_file.write(str(benign_avgs))
+  # benign_file.close()
+
+  with open('mole_random_forest_classifer.pk1', 'wb') as clf_file:
+    cPickle.dump(clf, clf_file)
 
   #build_linear_svm() # 0.601615384615
   #build_gaussian_nb() # 0.583888888889
