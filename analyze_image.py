@@ -24,7 +24,6 @@ def classify_image_url(img_url):
   labels = ['mse symmetry', 'ssim symmetry', 'border_gof', 'color_contrast']
   new_entry = extract_image_features(img)
 
-
   prediction = clf.predict(np.array(new_entry))
   output_messages = []
 
