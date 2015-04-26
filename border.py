@@ -2,7 +2,6 @@ import sys
 import math
 import numpy as np
 #from sklearn.cluster import KMeans
-import imageSegmentation as IS
 import cv2
 
 
