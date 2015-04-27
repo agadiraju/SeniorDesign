@@ -12,7 +12,11 @@ def hello():
 
 @app.route('/data')
 def get_image_classification():
-  return 'Test'
-  # img_url = request.args.get('img_url')
-  # messages = classify_image_url(str(img_url))
-  # return messages
+  #return 'Test'
+  img_url = request.args.get('img_url')
+  messages = classify_image_url(str(img_url))
+  print 'Success'
+  return ','.join(messages) 
+
+if __name__ == '__main__':
+  app.run(debug=True)
