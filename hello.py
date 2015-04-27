@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 
 from flask import Flask, request
 from analyze_image import classify_image_url
