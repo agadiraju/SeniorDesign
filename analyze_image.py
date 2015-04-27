@@ -46,7 +46,7 @@ def classify_image_url(img_url):
 
 def classify_image(img_path):
   # with open('mole_random_forest_classifer.pk1', 'rb') as fid:
-  clf = cPickle.load(open('mole_random_forest_classifer.pk1', 'rb'))
+  clf = cPickle.load(open('mole_random_forest_classifier.pk1', 'rb'))
   img = cv2.imread(img_path)
 
   malig_avgs = []
